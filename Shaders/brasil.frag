@@ -3,50 +3,43 @@ out vec4 FragColor;
 uniform float iTime;
 uniform vec2 iResolution;
 
-
-out vec4 FragColor;
-
-
-
 void main() {
+    vec3 green = vec3(0.0, 0.55, 0.0);
+    vec3 yellow = vec3(1.0, 1.0, 0.0);
+    vec3 blue = vec3(0.0, 0.0, 0.5);
+    vec3 white = vec3(1.0, 1.0, 1.0);
+    vec3 color = green;
+
     vec2 uv = gl_FragCoord.xy / iResolution.xy;
-    vec3 color = vec3(0.0);
+    vec2 center = vec2(0.5, 0.5);
 
-    // Fundo verde
-    if (uv.y < 0.75) {
-        color = vec3(0.0, 0.55, 0.0); // Verde escuro
+    vec2 adjusted_uv_losango = uv;
+    adjusted_uv_losango.x *= iResolution.x / iResolution.y;
+
+    float dist_losango = abs(adjusted_uv_losango.x - center.x * (iResolution.x / iResolution.y)) / 0.5 + abs(adjusted_uv_losango.y - center.y) / 0.35;
+    if (dist_losango < 1.0) {
+        color = yellow;
     }
 
-    // Losango amarelo
-    float dist = distance(uv, vec2(0.5, 0.5));
-    float angle = atan(uv.y - 0.5, uv.x - 0.5);
-    if (dist < 0.35 && angle > -2.356 && angle < -0.785) {
-        color = vec3(1.0, 1.0, 0.0); // Amarelo
+    vec2 adjusted_uv_circle = uv;
+    adjusted_uv_circle.x *= iResolution.x / iResolution.y;
+    float dist_circulo = distance(adjusted_uv_circle, vec2(0.5 * (iResolution.x / iResolution.y), 0.5));
+    if (dist_circulo < 0.22) {
+        color = blue;
     }
 
-    // Círculo azul
-    if (distance(uv, vec2(0.5, 0.5)) < 0.2) {
-        color = vec3(0.0, 0.0, 0.5); // Azul
+    vec2 faixa_uv = adjusted_uv_circle - vec2(0.5 * (iResolution.x / iResolution.y), 0.38);
+    
+    float raio_externo_faixa = 0.25;
+    float raio_interno_faixa = 0.21;
+    float offset_y_faixa = 0.03;
+
+    float dist_externo_faixa = distance(faixa_uv, vec2(0.0, -offset_y_faixa));
+    float dist_interno_faixa = distance(faixa_uv, vec2(0.0, -offset_y_faixa));
+    
+    if (dist_circulo < 0.22 && dist_externo_faixa < raio_externo_faixa && dist_interno_faixa > raio_interno_faixa) {
+        color = white;
     }
-
-    // Estrelas (exemplo)
-    float starSize = 0.01;
-    float star1 = step(starSize, distance(uv, vec2(0.4, 0.6)));
-    float star2 = step(starSize, distance(uv, vec2(0.6, 0.4)));
-    if (star1 > 0.0 || star2 > 0.0) {
-      color = vec3(1.0);
-    }
-
-
-    // Faixa branca com texto (exemplo simples)
-    if (uv.y > 0.45 && uv.y < 0.55) {
-        color = vec3(1.0);
-        if (uv.x > 0.2 && uv.x < 0.8) {
-            color = vec3(0.0, 0.55, 0.0); // Verde
-        }
-    }
-
 
     FragColor = vec4(color, 1.0);
 }
-  
