@@ -8,7 +8,7 @@ uniform int iMouseClick;
 // Buffer test - simple feedback system
 uniform sampler2D iChannel0;
 
-vec4 Circle(vec2 uv, vec2 center, float radius, vec3 input,  out vec3 output)
+void Circle(vec2 uv, vec2 center, float radius, vec3 input,  out vec3 output)
 {
         float dist = distance(uv, center);
         float circle = 1.0 - smoothstep(0.02, radius, dist);
@@ -34,7 +34,7 @@ void main()
     
     // Add new content when clicking
     if (iMouseClick == 1) {
-       Circle (uv, mouse, 0.05, color, color);
+       Circle(uv, mouse, 0.05, color, color);
     }
     
     // Always show mouse position
