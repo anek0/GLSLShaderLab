@@ -8,6 +8,16 @@ uniform int iMouseClick;
 // Buffer test - simple feedback system
 uniform sampler2D iChannel0;
 
+vec4 Circle(vec2 uv, vec2 center, float radius, vec3 input,  out vec3 output)
+{
+        float dist = distance(uv, center);
+        float circle = 1.0 - smoothstep(0.02, radius, dist);
+        vec3 paintColor = vec3(1.0, 0.5, 0.0); // orange
+        output = mix(input, paintColor, circle);
+
+}
+
+
 void main()
 {
     vec2 uv = gl_FragCoord.xy / iResolution.xy;
@@ -24,12 +34,7 @@ void main()
     
     // Add new content when clicking
     if (iMouseClick == 1) {
-        float dist = distance(uv, mouse);
-        float circle = 1.0 - smoothstep(0.02, 0.05, dist);
-        
-        // Bright color that stands out
-        vec3 paintColor = vec3(1.0, 0.5, 0.0); // orange
-        color = mix(color, paintColor, circle);
+       Circle (uv, mouse, 0.05, color, color);
     }
     
     // Always show mouse position
