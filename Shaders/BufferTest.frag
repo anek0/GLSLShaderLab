@@ -1,12 +1,22 @@
 #version 330 core
 out vec4 FragColor;
-uniform float iTime;
-uniform vec2 iResolution;
-uniform vec2 iMouse;
-uniform int iMouseClick;
 
-// Buffer test - simple feedback system
-uniform sampler2D iChannel0;
+uniform vec2  iResolution;
+uniform vec2  iMouse;
+uniform int   iMouseClick;
+uniform sampler2D iChannel0; 
+
+
+const float SCALE   = 1.010; 
+const float DAMPING = 0.996; 
+
+float softCircle(vec2 uv, vec2 c, float r) {
+    float d = distance(uv, c);
+    return smoothstep(r, r*0.6, r - d);
+}
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / iResolution;
 
 void Circle(vec2 uv, vec2 center, float radius, vec3 input,  out vec3 output)
 {
@@ -23,24 +33,32 @@ void main()
     vec2 uv = gl_FragCoord.xy / iResolution.xy;
     vec2 mouse = iMouse.xy / iResolution.xy;
     
-    // Read previous frame
-    vec3 previous = texture(iChannel0, uv).rgb;
+    vec4 prev = texture(iChannel0, uv);
+    vec3 colorPrev = prev.rgb;
+    vec2 centerPrev = prev.ba; 
+
+
+    if (centerPrev == vec2(0.0)) centerPrev = vec2(0.5);
+
+
+    vec2 mouse = iMouse / iResolution;
+    vec2 center = (iMouseClick == 1) ? mouse : centerPrev;
+
+   
+    vec2 scaledUV = center + (uv - center) * SCALE;
+    scaledUV = clamp(scaledUV, 0.0, 1.0);
+
     
-    // Start with previous frame (for persistence)
-    vec3 color = previous;
+    vec3 color = texture(iChannel0, scaledUV).rgb;
+
+   
+    color *= DAMPING;
+
     
-    // Fade slightly over time (optional)
-    color *= 0.99;
-    
-    // Add new content when clicking
     if (iMouseClick == 1) {
        Circle(uv, mouse, 0.05, color, color);
     }
+
     
-    // Always show mouse position
-    float mouseDist = distance(uv, mouse);
-    float mouseIndicator = 1.0 - smoothstep(0.002, 0.005, mouseDist);
-    color = mix(color, vec3(0.0, 1.0, 1.0), mouseIndicator * 0.8);
-    
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(color.rg, center.x, center.y);
 }
