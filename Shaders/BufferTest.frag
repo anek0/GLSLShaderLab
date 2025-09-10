@@ -15,8 +15,6 @@ float softCircle(vec2 uv, vec2 c, float r) {
     return smoothstep(r, r*0.6, r - d);
 }
 
-void main() {
-    vec2 uv = gl_FragCoord.xy / iResolution;
 
 void Circle(vec2 uv, vec2 center, float radius, vec3 input,  out vec3 output)
 {
@@ -41,7 +39,7 @@ void main()
     if (centerPrev == vec2(0.0)) centerPrev = vec2(0.5);
 
 
-    vec2 mouse = iMouse / iResolution;
+    
     vec2 center = (iMouseClick == 1) ? mouse : centerPrev;
 
    
