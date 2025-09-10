@@ -7,7 +7,7 @@ uniform int   iMouseClick;   // 0 or 1
 uniform sampler2D iChannel0; // previous frame
 uniform float iTime;
 // params
-const float SCALE  = 0.999;  // >1.0 = expand outward (zoom-in)
+const float SCALE  = 1.001;  // >1.0 = expand outward (zoom-in)
 const float RADIUS = 0.03;   // brush radius (normalized)
 const float EDGE   = 0.02;   // brush soft edge (normalized)
 
@@ -43,6 +43,8 @@ void main() {
         vec3 paint = 0.5 + 0.5 * cos(iTime + uvN.xyx + vec3(0,2,4));
         color = mix(color, paint, a);
     }
+
+    color *= 0.99;
 
     FragColor = vec4(color, 1.0);
 }
