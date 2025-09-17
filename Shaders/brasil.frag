@@ -2,6 +2,7 @@
 out vec4 FragColor;
 uniform float iTime;
 uniform vec2 iResolution;
+in vec2 TexCoord;
 
 void main() {
     vec3 green = vec3(0.0, 0.55, 0.0);
@@ -10,7 +11,8 @@ void main() {
     vec3 white = vec3(1.0, 1.0, 1.0);
     vec3 color = green;
 
-    vec2 uv = gl_FragCoord.xy / iResolution.xy;
+    //vec2 uv = gl_FragCoord.xy / iResolution.xy;
+    vec2 uv = TexCoord;
     vec2 center = vec2(0.5, 0.5);
 
     vec2 adjusted_uv_losango = uv;

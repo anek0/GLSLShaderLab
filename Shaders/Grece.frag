@@ -2,11 +2,13 @@
 out vec4 fragColor;
 uniform float iTime;
 uniform vec2 iResolution;
+in vec2 TexCoord;
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / iResolution.xy;
-    
+    //vec2 uv = gl_FragCoord.xy / iResolution.xy;
+     vec2 uv = TexCoord;
+
     if(uv.y > 0.6670 && uv.y < 0.7777 && uv.x < 0.3333)
     {
         fragColor = vec4(1.0,1.0,1.0,1.0);
