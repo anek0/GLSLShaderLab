@@ -54,10 +54,13 @@ namespace GLSLShaderLab
             })
         {
             _selectedShader = selectedShader;
-            
-            // Carregar lista de shaders disponíveis
-            var selector = new ShaderSelector();
-            _availableShaders = selector.GetAvailableShaders();
+            _selectedModel = selectedModel;
+
+            var shaderSelector = new ShaderSelector();
+            var modelSelector = new ModelSelector();
+            _availableShaders = shaderSelector.GetAvailableShaders();
+            _availableModels = modelSelector.GetAvailableModels();
+
             _currentShaderIndex = _availableShaders.FindIndex(s => s.Name == selectedShader.Name);
             if (_currentShaderIndex == -1) _currentShaderIndex = 0;
 
