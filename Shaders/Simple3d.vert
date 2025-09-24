@@ -15,6 +15,8 @@ out vec3 WorldPos;
 
 void main()
 {
+    //vec 4 x,y,z,w (color = rgba)
+    //world position of the vertex
     WorldPos = vec3(model * vec4(aPos, 1.0));
     FragPos = WorldPos;
     Normal = mat3(transpose(inverse(model))) * aNormal;
