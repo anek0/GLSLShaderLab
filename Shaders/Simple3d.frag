@@ -23,12 +23,10 @@ void main()
     vec4 texColor = texture(texture2, TexCoord); // <- usa texture1
     vec4 texColor1 = texture(texture3, TexCoord); // <- usa texture0
 
-  
-   
-    
-        FragColor = texColor * (brightness + ambient);
+  FragColor = texColor * (brightness + ambient);
 
-       FragColor = mix(texColor,  texColor1,  1 - cos(brightness))  * (brightness + ambient);
+  FragColor = mix(texColor,  texColor1,  1 - cos(brightness))  * (brightness + ambient);
+
     }
  
     
