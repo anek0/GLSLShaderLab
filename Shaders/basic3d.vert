@@ -15,7 +15,7 @@ out vec3 WorldPos;
 
 void main()
 {
-    WorldPos = vec3(model * vec4(aPos, 1.0));
+    WorldPos = vec3(model * vec4(aPos + vec3( sin(iTime + aPos.y * 2), 1, sin(iTime + aPos.x * 2)), 1.0));
     FragPos = WorldPos;
     Normal = mat3(transpose(inverse(model))) * aNormal;
     TexCoord = aTexCoord;

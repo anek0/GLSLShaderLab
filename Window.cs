@@ -400,7 +400,7 @@ namespace GLSLShaderLab
             if (input.IsKeyDown(Keys.S)) _cameraPos -= _cameraFront * speed;
             if (input.IsKeyDown(Keys.A)) _cameraPos -= Vector3.Normalize(Vector3.Cross(_cameraFront, _cameraUp)) * speed;
             if (input.IsKeyDown(Keys.D)) _cameraPos += Vector3.Normalize(Vector3.Cross(_cameraFront, _cameraUp)) * speed;
-            _rotationY += (float)args.Time * 30.0f;
+            //_rotationY += (float)args.Time * 30.0f;
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
